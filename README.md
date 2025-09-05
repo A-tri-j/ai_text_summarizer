@@ -1,6 +1,7 @@
 # HTML
 
-A modern HTML project utilizing Tailwind CSS for building responsive web applications with minimal setup.
+An AI-powered web application that converts lengthy text into concise, digestible summaries.  
+Built by **Atrij Ghosh** using **Rocket.new**, HTML, Tailwind CSS, and the OpenAI API.
 
 ## 🚀 Features
 
