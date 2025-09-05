@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Summary History Archive - AI Text Summarizer</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Faitextsu4509back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-surface border-b border-subtle sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="32" height="32" rx="8" fill="currentColor"/>
+                            <path d="M8 12h16M8 16h12M8 20h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-semibold text-text-primary">AI Text Summarizer</h1>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="text_summarization_hub.html" class="text-text-secondary hover:text-text-primary px-3 py-2 rounded-md text-sm font-medium transition-smooth">Hub</a>
+                        <a href="summary_history_archive.html" class="bg-primary-100 text-primary-700 px-3 py-2 rounded-md text-sm font-medium">History</a>
+                        <a href="settings_and_preferences.html" class="text-text-secondary hover:text-text-primary px-3 py-2 rounded-md text-sm font-medium transition-smooth">Settings</a>
+                    </div>
+                </div>
+
+                <!-- Theme Toggle & Mobile Menu -->
+                <div class="flex items-center space-x-4">
+                    <button id="themeToggle" class="p-2 rounded-md text-text-secondary hover:text-text-primary transition-smooth">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Mobile menu button -->
+                    <button id="mobileMenuBtn" class="md:hidden p-2 rounded-md text-text-secondary hover:text-text-primary">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div id="mobileMenu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-subtle">
+                    <a href="text_summarization_hub.html" class="text-text-secondary hover:text-text-primary block px-3 py-2 rounded-md text-base font-medium">Hub</a>
+                    <a href="summary_history_archive.html" class="bg-primary-100 text-primary-700 block px-3 py-2 rounded-md text-base font-medium">History</a>
+                    <a href="settings_and_preferences.html" class="text-text-secondary hover:text-text-primary block px-3 py-2 rounded-md text-base font-medium">Settings</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-3xl font-semibold text-text-primary mb-2">Summary History Archive</h2>
+                    <p class="text-text-secondary">Review, manage, and reuse your previously generated summaries.</p>
+                </div>
+                <div class="mt-4 sm:mt-0 flex items-center space-x-3">
+                    <button id="bulkSelectBtn" class="btn btn-secondary">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Select Multiple
+                    </button>
+                    <a href="text_summarization_hub.html" class="btn btn-primary">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        New Summary
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="card p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-text-primary">Filter & Search</h3>
+                <button id="toggleFilters" class="md:hidden btn btn-secondary text-sm">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"/>
+                    </svg>
+                    Filters
+                </button>
+            </div>
+
+            <div id="filterContent" class="space-y-4">
+                <!-- Search Bar -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <input id="searchInput" type="text" placeholder="Search summaries..." class="input pl-10" />
+                </div>
+
+                <!-- Filter Options -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Date Range -->
+                    <div>
+                        <label class="block text-sm font-medium text-text-primary mb-2">Date Range</label>
+                        <select id="dateFilter" class="input">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+
+                    <!-- Summary Mode -->
+                    <div>
+                        <label class="block text-sm font-medium text-text-primary mb-2">Summary Mode</label>
+                        <select id="modeFilter" class="input">
+                            <option value="all">All Modes</option>
+                            <option value="short">Short</option>
+                            <option value="medium">Medium</option>
+                            <option value="bullets">Bullet Points</option>
+                        </select>
+                    </div>
+
+                    <!-- Language -->
+                    <div>
+                        <label class="block text-sm font-medium text-text-primary mb-2">Language</label>
+                        <select id="languageFilter" class="input">
+                            <option value="all">All Languages</option>
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="bn">Bengali</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort By -->
+                    <div>
+                        <label class="block text-sm font-medium text-text-primary mb-2">Sort By</label>
+                        <select id="sortFilter" class="input">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="longest">Longest Original</option>
+                            <option value="shortest">Shortest Original</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Filter Actions -->
+                <div class="flex items-center justify-between pt-4 border-t border-subtle">
+                    <div class="text-sm text-text-secondary">
+                        <span id="resultCount">24 summaries found</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button id="clearFilters" class="btn btn-secondary text-sm">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                            Clear
+                        </button>
+                        <button id="applyFilters" class="btn btn-primary text-sm">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"/>
+                            </svg>
+                            Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bulk Actions Bar (Hidden by default) -->
+        <div id="bulkActionsBar" class="hidden card p-4 mb-6 bg-primary-50 border-primary-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm font-medium text-primary-700">
+                        <span id="selectedCount">0</span> summaries selected
+                    </span>
+                    <button id="selectAll" class="text-sm text-primary-600 hover:text-primary-700">Select All</button>
+                    <button id="deselectAll" class="text-sm text-primary-600 hover:text-primary-700">Deselect All</button>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="bulkExport" class="btn btn-primary text-sm">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Export Selected
+                    </button>
+                    <button id="bulkDelete" class="btn btn-secondary text-sm text-error-600 hover:bg-error-100">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        Delete Selected
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div id="summaryList" class="space-y-4">
+            <!-- Summary Card 1 -->
+            <div class="card p-6 hover:shadow-elevated transition-smooth summary-card" data-id="1">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-start space-x-4 flex-1">
+                        <div class="bulk-checkbox hidden">
+                            <input type="checkbox" class="text-primary focus:ring-primary-500 rounded" />
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h4 class="text-lg font-semibold text-text-primary">AI Technology Impact Analysis</h4>
+                                <span class="px-2 py-1 bg-primary-100 text-primary-700 text-xs rounded-full">Medium</span>
+                                <span class="px-2 py-1 bg-accent-100 text-accent-700 text-xs rounded-full">English</span>
+                            </div>
+                            <p class="text-sm text-text-secondary mb-3 line-clamp-2">
+                                The rapid advancement of artificial intelligence technology has fundamentally transformed modern business operations across multiple industries. Companies are increasingly adopting AI-driven solutions to enhance productivity, streamline processes, and gain competitive advantages in the marketplace...
+                            </p>
+                            <div class="flex items-center space-x-4 text-xs text-text-secondary">
+                                <span>Created: Sep 5, 2025 at 2:15 PM</span>
+                                <span>•</span>
+                                <span>Original: 1,247 words (6 min read)</span>
+                                <span>•</span>
+                                <span class="text-success-600">Summary: 89 words (1 min read)</span>
+                                <span>•</span>
+                                <span>93% compression</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 ml-4">
+                        <button class="expand-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Expand">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <button class="copy-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Copy Summary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                            </svg>
+                        </button>
+                        <button class="download-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Download">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </button>
+                        <button class="delete-btn p-2 text-text-secondary hover:text-error-600 transition-smooth" title="Delete">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Expanded Content (Hidden by default) -->
+                <div class="expanded-content hidden border-t border-subtle pt-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-medium text-text-primary mb-2">Original Text Preview</h5>
+                            <div class="bg-secondary-50 rounded-md p-4 text-sm text-text-secondary max-h-48 overflow-y-auto">
+                                The rapid advancement of artificial intelligence technology has fundamentally transformed modern business operations across multiple industries. Companies are increasingly adopting AI-driven solutions to enhance productivity, streamline processes, and gain competitive advantages in the marketplace. From automated customer service chatbots to sophisticated data analytics platforms, AI integration has become essential for organizations seeking to remain competitive in today's digital economy. The implementation of machine learning algorithms has revolutionized decision-making processes, enabling businesses to analyze vast amounts of data and extract actionable insights that drive strategic planning and operational efficiency...
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-text-primary mb-2">Generated Summary</h5>
+                            <div class="bg-primary-50 rounded-md p-4 text-sm text-text-primary">
+                                Artificial intelligence has transformed business operations across industries through automated solutions and data analytics. Companies adopt AI-driven tools to enhance productivity and gain competitive advantages. Machine learning algorithms revolutionize decision-making by analyzing vast data sets for strategic insights. AI integration has become essential for organizations to remain competitive in the digital economy.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Card 2 -->
+            <div class="card p-6 hover:shadow-elevated transition-smooth summary-card" data-id="2">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-start space-x-4 flex-1">
+                        <div class="bulk-checkbox hidden">
+                            <input type="checkbox" class="text-primary focus:ring-primary-500 rounded" />
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h4 class="text-lg font-semibold text-text-primary">Climate Change Research Paper</h4>
+                                <span class="px-2 py-1 bg-secondary-100 text-secondary-700 text-xs rounded-full">Bullets</span>
+                                <span class="px-2 py-1 bg-accent-100 text-accent-700 text-xs rounded-full">English</span>
+                            </div>
+                            <p class="text-sm text-text-secondary mb-3 line-clamp-2">
+                                Climate change mitigation strategies require comprehensive policy frameworks that address both immediate environmental concerns and long-term sustainability goals. Recent research indicates that coordinated global efforts combining renewable energy adoption, carbon pricing mechanisms, and technological innovation...
+                            </p>
+                            <div class="flex items-center space-x-4 text-xs text-text-secondary">
+                                <span>Created: Sep 4, 2025 at 10:30 AM</span>
+                                <span>•</span>
+                                <span>Original: 2,156 words (11 min read)</span>
+                                <span>•</span>
+                                <span class="text-success-600">Summary: 127 words (1 min read)</span>
+                                <span>•</span>
+                                <span>94% compression</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 ml-4">
+                        <button class="expand-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Expand">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <button class="copy-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Copy Summary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                            </svg>
+                        </button>
+                        <button class="download-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Download">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </button>
+                        <button class="delete-btn p-2 text-text-secondary hover:text-error-600 transition-smooth" title="Delete">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Expanded Content (Hidden by default) -->
+                <div class="expanded-content hidden border-t border-subtle pt-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-medium text-text-primary mb-2">Original Text Preview</h5>
+                            <div class="bg-secondary-50 rounded-md p-4 text-sm text-text-secondary max-h-48 overflow-y-auto">
+                                Climate change mitigation strategies require comprehensive policy frameworks that address both immediate environmental concerns and long-term sustainability goals. Recent research indicates that coordinated global efforts combining renewable energy adoption, carbon pricing mechanisms, and technological innovation are essential for achieving meaningful reductions in greenhouse gas emissions. The transition to sustainable energy systems presents both challenges and opportunities for economic development...
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-text-primary mb-2">Generated Summary</h5>
+                            <div class="bg-primary-50 rounded-md p-4 text-sm text-text-primary">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Climate change requires comprehensive policy frameworks for immediate and long-term goals</li>
+                                    <li>Coordinated global efforts combining renewable energy and carbon pricing are essential</li>
+                                    <li>Technological innovation plays a crucial role in reducing greenhouse gas emissions</li>
+                                    <li>Sustainable energy transition presents economic development opportunities</li>
+                                    <li>International cooperation is vital for achieving meaningful climate targets</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Card 3 -->
+            <div class="card p-6 hover:shadow-elevated transition-smooth summary-card" data-id="3">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex items-start space-x-4 flex-1">
+                        <div class="bulk-checkbox hidden">
+                            <input type="checkbox" class="text-primary focus:ring-primary-500 rounded" />
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h4 class="text-lg font-semibold text-text-primary">Technology Sector News</h4>
+                                <span class="px-2 py-1 bg-warning-100 text-warning-700 text-xs rounded-full">Short</span>
+                                <span class="px-2 py-1 bg-accent-100 text-accent-700 text-xs rounded-full">English</span>
+                            </div>
+                            <p class="text-sm text-text-secondary mb-3 line-clamp-2">
+                                Technology sector shows remarkable resilience amid economic uncertainties with strong quarterly results across major companies. Leading tech giants report increased revenue streams from cloud services, artificial intelligence solutions, and digital transformation initiatives...
+                            </p>
+                            <div class="flex items-center space-x-4 text-xs text-text-secondary">
+                                <span>Created: Sep 2, 2025 at 4:45 PM</span>
+                                <span>•</span>
+                                <span>Original: 456 words (2 min read)</span>
+                                <span>•</span>
+                                <span class="text-success-600">Summary: 28 words (0 min read)</span>
+                                <span>•</span>
+                                <span>94% compression</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 ml-4">
+                        <button class="expand-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Expand">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <button class="copy-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Copy Summary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                            </svg>
+                        </button>
+                        <button class="download-btn p-2 text-text-secondary hover:text-text-primary transition-smooth" title="Download">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </button>
+                        <button class="delete-btn p-2 text-text-secondary hover:text-error-600 transition-smooth" title="Delete">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Expanded Content (Hidden by default) -->
+                <div class="expanded-content hidden border-t border-subtle pt-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="font-medium text-text-primary mb-2">Original Text Preview</h5>
+                            <div class="bg-secondary-50 rounded-md p-4 text-sm text-text-secondary max-h-48 overflow-y-auto">
+                                Technology sector shows remarkable resilience amid economic uncertainties with strong quarterly results across major companies. Leading tech giants report increased revenue streams from cloud services, artificial intelligence solutions, and digital transformation initiatives. Market analysts highlight the sector's ability to adapt and innovate during challenging economic conditions, with particular strength in enterprise software and cybersecurity segments...
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="font-medium text-text-primary mb-2">Generated Summary</h5>
+                            <div class="bg-primary-50 rounded-md p-4 text-sm text-text-primary">
+                                Technology sector demonstrates resilience with strong quarterly results from cloud services, AI solutions, and digital transformation initiatives.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center py-8">
+                <button id="loadMoreBtn" class="btn btn-secondary">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Load More Summaries
+                </button>
+            </div>
+        </div>
+
+        <!-- Empty State (Hidden by default) -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <div class="max-w-md mx-auto">
+                <svg class="mx-auto h-24 w-24 text-text-secondary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <h3 class="text-lg font-medium text-text-primary mb-2">No summaries found</h3>
+                <p class="text-text-secondary mb-6">Try adjusting your search criteria or create your first summary.</p>
+                <a href="text_summarization_hub.html" class="btn btn-primary">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Create Summary
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-surface rounded-lg p-6 max-w-md w-full mx-4">
+            <div class="flex items-center mb-4">
+                <div class="flex-shrink-0">
+                    <svg class="h-6 w-6 text-error-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-medium text-text-primary">Delete Summary</h3>
+                </div>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm text-text-secondary">Are you sure you want to delete this summary? This action cannot be undone.</p>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancelDelete" class="btn btn-secondary">Cancel</button>
+                <button id="confirmDelete" class="btn btn-primary bg-error-600 hover:bg-error-700">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copy Success Toast -->
+    <div id="copyToast" class="hidden fixed bottom-4 right-4 bg-success-600 text-white px-4 py-2 rounded-md shadow-elevated z-50">
+        <div class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            Copied to clipboard!
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const themeToggle = document.getElementById('themeToggle');
+        const toggleFilters = document.getElementById('toggleFilters');
+        const filterContent = document.getElementById('filterContent');
+        const bulkSelectBtn = document.getElementById('bulkSelectBtn');
+        const bulkActionsBar = document.getElementById('bulkActionsBar');
+        const selectedCount = document.getElementById('selectedCount');
+        const deleteModal = document.getElementById('deleteModal');
+        const copyToast = document.getElementById('copyToast');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+        let bulkSelectMode = false;
+        let selectedSummaries = new Set();
+        let currentDeleteTarget = null;
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+        }
+
+        // Filter toggle (mobile)
+        toggleFilters.addEventListener('click', () => {
+            filterContent.classList.toggle('hidden');
+            const icon = toggleFilters.querySelector('svg');
+            icon.style.transform = filterContent.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        // Bulk selection toggle
+        bulkSelectBtn.addEventListener('click', () => {
+            bulkSelectMode = !bulkSelectMode;
+            const checkboxes = document.querySelectorAll('.bulk-checkbox');
+            const bulkActionsBar = document.getElementById('bulkActionsBar');
+            
+            if (bulkSelectMode) {
+                checkboxes.forEach(cb => cb.classList.remove('hidden'));
+                bulkActionsBar.classList.remove('hidden');
+                bulkSelectBtn.innerHTML = `
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Cancel Selection
+                `;
+            } else {
+                checkboxes.forEach(cb => {
+                    cb.classList.add('hidden');
+                    cb.querySelector('input').checked = false;
+                });
+                bulkActionsBar.classList.add('hidden');
+                selectedSummaries.clear();
+                updateSelectedCount();
+                bulkSelectBtn.innerHTML = `
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Select Multiple
+                `;
+            }
+        });
+
+        // Select/Deselect all
+        document.getElementById('selectAll').addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('.bulk-checkbox input');
+            checkboxes.forEach((cb, index) => {
+                cb.checked = true;
+                selectedSummaries.add(index + 1);
+            });
+            updateSelectedCount();
+        });
+
+        document.getElementById('deselectAll').addEventListener('click', () => {
+            const checkboxes = document.querySelectorAll('.bulk-checkbox input');
+            checkboxes.forEach(cb => cb.checked = false);
+            selectedSummaries.clear();
+            updateSelectedCount();
+        });
+
+        // Individual checkbox handling
+        document.addEventListener('change', (e) => {
+            if (e.target.matches('.bulk-checkbox input')) {
+                const summaryCard = e.target.closest('.summary-card');
+                const summaryId = parseInt(summaryCard.dataset.id);
+                
+                if (e.target.checked) {
+                    selectedSummaries.add(summaryId);
+                } else {
+                    selectedSummaries.delete(summaryId);
+                }
+                updateSelectedCount();
+            }
+        });
+
+        function updateSelectedCount() {
+            selectedCount.textContent = selectedSummaries.size;
+        }
+
+        // Expand/Collapse functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.expand-btn')) {
+                const card = e.target.closest('.summary-card');
+                const expandedContent = card.querySelector('.expanded-content');
+                const expandBtn = e.target.closest('.expand-btn');
+                const icon = expandBtn.querySelector('svg');
+                
+                expandedContent.classList.toggle('hidden');
+                icon.style.transform = expandedContent.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        });
+
+        // Copy functionality
+        document.addEventListener('click', async (e) => {
+            if (e.target.closest('.copy-btn')) {
+                const card = e.target.closest('.summary-card');
+                const summaryText = card.querySelector('.expanded-content .bg-primary-50').textContent;
+                
+                try {
+                    await navigator.clipboard.writeText(summaryText);
+                    showCopyToast();
+                } catch (err) {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = summaryText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showCopyToast();
+                }
+            }
+        });
+
+        // Delete functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.delete-btn')) {
+                const card = e.target.closest('.summary-card');
+                currentDeleteTarget = card;
+                deleteModal.classList.remove('hidden');
+            }
+        });
+
+        // Delete modal handlers
+        document.getElementById('cancelDelete').addEventListener('click', () => {
+            deleteModal.classList.add('hidden');
+            currentDeleteTarget = null;
+        });
+
+        document.getElementById('confirmDelete').addEventListener('click', () => {
+            if (currentDeleteTarget) {
+                currentDeleteTarget.remove();
+                deleteModal.classList.add('hidden');
+                currentDeleteTarget = null;
+                
+                // Update result count
+                const remainingCards = document.querySelectorAll('.summary-card').length;
+                document.getElementById('resultCount').textContent = `${remainingCards} summaries found`;
+            }
+        });
+
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) {
+                deleteModal.classList.add('hidden');
+                currentDeleteTarget = null;
+            }
+        });
+
+        // Filter functionality
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            // Simulate filtering
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.summary-card');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h4').textContent.toLowerCase();
+                const preview = card.querySelector('.line-clamp-2').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || preview.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('resultCount').textContent = `${visibleCount} summaries found`;
+            
+            // Show empty state if no results
+            const summaryList = document.getElementById('summaryList');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (visibleCount === 0) {
+                summaryList.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                summaryList.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            }
+        });
+
+        // Clear filters
+        document.getElementById('clearFilters').addEventListener('click', () => {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('dateFilter').value = 'all';
+            document.getElementById('modeFilter').value = 'all';
+            document.getElementById('languageFilter').value = 'all';
+            document.getElementById('sortFilter').value = 'newest';
+            
+            // Show all cards
+            const cards = document.querySelectorAll('.summary-card');
+            cards.forEach(card => card.style.display = 'block');
+            
+            document.getElementById('resultCount').textContent = `${cards.length} summaries found`;
+            document.getElementById('summaryList').classList.remove('hidden');
+            document.getElementById('emptyState').classList.add('hidden');
+        });
+
+        // Load more functionality
+        loadMoreBtn.addEventListener('click', () => {
+            // Simulate loading more summaries
+            loadMoreBtn.innerHTML = `
+                <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                Loading...
+            `;
+            
+            setTimeout(() => {
+                loadMoreBtn.innerHTML = `
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Load More Summaries
+                `;
+            }, 1500);
+        });
+
+        // Bulk export functionality
+        document.getElementById('bulkExport').addEventListener('click', () => {
+            if (selectedSummaries.size === 0) {
+                alert('Please select summaries to export.');
+                return;
+            }
+            
+            // Simulate export
+            alert(`Exporting ${selectedSummaries.size} summaries...`);
+        });
+
+        // Bulk delete functionality
+        document.getElementById('bulkDelete').addEventListener('click', () => {
+            if (selectedSummaries.size === 0) {
+                alert('Please select summaries to delete.');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete ${selectedSummaries.size} summaries? This action cannot be undone.`)) {
+                selectedSummaries.forEach(id => {
+                    const card = document.querySelector(`[data-id="${id}"]`);
+                    if (card) card.remove();
+                });
+                
+                selectedSummaries.clear();
+                updateSelectedCount();
+                
+                // Update result count
+                const remainingCards = document.querySelectorAll('.summary-card').length;
+                document.getElementById('resultCount').textContent = `${remainingCards} summaries found`;
+            }
+        });
+
+        function showCopyToast() {
+            copyToast.classList.remove('hidden');
+            setTimeout(() => {
+                copyToast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Initialize
+        updateSelectedCount();
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

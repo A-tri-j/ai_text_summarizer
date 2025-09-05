@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Summarization Hub - AI Text Summarizer</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Faitextsu4509back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-surface border-b border-subtle sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="32" height="32" rx="8" fill="currentColor"/>
+                            <path d="M8 12h16M8 16h12M8 20h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-semibold text-text-primary">AI Text Summarizer</h1>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="text_summarization_hub.html" class="bg-primary-100 text-primary-700 px-3 py-2 rounded-md text-sm font-medium">Hub</a>
+                        <a href="summary_history_archive.html" class="text-text-secondary hover:text-text-primary px-3 py-2 rounded-md text-sm font-medium transition-smooth">History</a>
+                        <a href="settings_and_preferences.html" class="text-text-secondary hover:text-text-primary px-3 py-2 rounded-md text-sm font-medium transition-smooth">Settings</a>
+                    </div>
+                </div>
+
+                <!-- Theme Toggle & Mobile Menu -->
+                <div class="flex items-center space-x-4">
+                    <button id="themeToggle" class="p-2 rounded-md text-text-secondary hover:text-text-primary transition-smooth">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Mobile menu button -->
+                    <button id="mobileMenuBtn" class="md:hidden p-2 rounded-md text-text-secondary hover:text-text-primary">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div id="mobileMenu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-subtle">
+                    <a href="text_summarization_hub.html" class="bg-primary-100 text-primary-700 block px-3 py-2 rounded-md text-base font-medium">Hub</a>
+                    <a href="summary_history_archive.html" class="text-text-secondary hover:text-text-primary block px-3 py-2 rounded-md text-base font-medium">History</a>
+                    <a href="settings_and_preferences.html" class="text-text-secondary hover:text-text-primary block px-3 py-2 rounded-md text-base font-medium">Settings</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Main Content Area -->
+            <div class="flex-1">
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <h2 class="text-3xl font-semibold text-text-primary mb-2">Text Summarization Hub</h2>
+                    <p class="text-text-secondary">Transform lengthy content into concise, digestible summaries with AI-powered precision.</p>
+                </div>
+
+                <!-- Input Section -->
+                <div class="card p-6 mb-6">
+                    <div class="mb-4">
+                        <label for="textInput" class="block text-sm font-medium text-text-primary mb-2">
+                            Enter your text to summarize
+                        </label>
+                        <textarea id="textInput" placeholder="Paste your article, report, or any lengthy text here..." class="input min-h-[300px] resize-y" rows="12"></textarea>
+                    </div>
+
+                    <!-- Text Statistics -->
+                    <div class="flex flex-wrap items-center justify-between text-sm text-text-secondary mb-6">
+                        <div class="flex items-center space-x-4">
+                            <span id="wordCount">0 words</span>
+                            <span id="charCount">0 characters</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span id="readingTime">~0 min read</span>
+                            <span id="estimatedSummaryTime" class="text-accent">~0 min summary</span>
+                        </div>
+                    </div>
+
+                    <!-- Summary Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- Summary Mode Selection -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary mb-3">Summary Mode</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="summaryMode" value="short" class="text-primary focus:ring-primary-500" checked />
+                                    <span class="ml-2 text-sm">Short (1-2 sentences)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="summaryMode" value="medium" class="text-primary focus:ring-primary-500" />
+                                    <span class="ml-2 text-sm">Medium (3-5 sentences)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="summaryMode" value="bullets" class="text-primary focus:ring-primary-500" />
+                                    <span class="ml-2 text-sm">Bullet Points</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Language Selection -->
+                        <div>
+                            <label for="languageSelect" class="block text-sm font-medium text-text-primary mb-3">Output Language</label>
+                            <select id="languageSelect" class="input">
+                                <option value="en">English</option>
+                                <option value="hi">Hindi (हिंदी)</option>
+                                <option value="bn">Bengali (বাংলা)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button id="summarizeBtn" class="btn btn-primary flex-1 py-3 text-base font-medium">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            Summarize Text
+                        </button>
+                        <button id="clearBtn" class="btn btn-secondary py-3 text-base font-medium">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="hidden card p-4 mb-6 bg-error-100 border-error-500">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 text-error-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                        <span id="errorText" class="text-error-600 font-medium"></span>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="hidden card p-8 mb-6">
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+                        <p class="text-text-secondary">Generating your summary...</p>
+                        <p class="text-sm text-text-secondary mt-1">This may take a few seconds</p>
+                    </div>
+                </div>
+
+                <!-- Summary Display -->
+                <div id="summarySection" class="hidden card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-text-primary">Generated Summary</h3>
+                        <div class="flex items-center space-x-2">
+                            <button id="copyBtn" class="btn btn-secondary text-sm">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                                Copy
+                            </button>
+                            <div class="relative">
+                                <button id="downloadBtn" class="btn btn-secondary text-sm">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    Download
+                                </button>
+                                <div id="downloadMenu" class="hidden absolute right-0 mt-2 w-48 bg-surface rounded-md shadow-elevated border border-subtle z-10">
+                                    <button id="downloadPDF" class="block w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-secondary-100 rounded-t-md">Download as PDF</button>
+                                    <button id="downloadTXT" class="block w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-secondary-100 rounded-b-md">Download as TXT</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="summaryContent" class="prose max-w-none">
+                        <!-- Summary content will be inserted here -->
+                    </div>
+
+                    <!-- Summary Statistics -->
+                    <div class="mt-4 pt-4 border-t border-subtle">
+                        <div class="flex flex-wrap items-center justify-between text-sm text-text-secondary">
+                            <div class="flex items-center space-x-4">
+                                <span id="summaryWordCount">0 words</span>
+                                <span id="compressionRatio">0% compression</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span>Original: <span id="originalReadTime">0 min</span></span>
+                                <span class="text-success-600">Summary: <span id="summaryReadTime">0 min</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Sidebar -->
+            <div class="w-full lg:w-80">
+                <div class="card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-text-primary">Recent Summaries</h3>
+                        <button id="toggleHistory" class="lg:hidden btn btn-secondary text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="historyContent" class="space-y-4">
+                        <!-- Sample History Items -->
+                        <div class="border border-subtle rounded-lg p-4 hover:bg-secondary-50 transition-smooth cursor-pointer">
+                            <div class="flex items-start justify-between mb-2">
+                                <span class="text-sm font-medium text-text-primary">Article Summary</span>
+                                <span class="text-xs text-text-secondary">2 hours ago</span>
+                            </div>
+                            <p class="text-sm text-text-secondary line-clamp-2">The impact of artificial intelligence on modern business operations has been transformative...</p>
+                            <div class="flex items-center mt-2 text-xs text-text-secondary">
+                                <span>Medium • English</span>
+                                <span class="mx-2">•</span>
+                                <span>156 words → 42 words</span>
+                            </div>
+                        </div>
+
+                        <div class="border border-subtle rounded-lg p-4 hover:bg-secondary-50 transition-smooth cursor-pointer">
+                            <div class="flex items-start justify-between mb-2">
+                                <span class="text-sm font-medium text-text-primary">Research Paper</span>
+                                <span class="text-xs text-text-secondary">1 day ago</span>
+                            </div>
+                            <p class="text-sm text-text-secondary line-clamp-2">Climate change mitigation strategies require comprehensive policy frameworks...</p>
+                            <div class="flex items-center mt-2 text-xs text-text-secondary">
+                                <span>Bullet Points • English</span>
+                                <span class="mx-2">•</span>
+                                <span>892 words → 127 words</span>
+                            </div>
+                        </div>
+
+                        <div class="border border-subtle rounded-lg p-4 hover:bg-secondary-50 transition-smooth cursor-pointer">
+                            <div class="flex items-start justify-between mb-2">
+                                <span class="text-sm font-medium text-text-primary">News Article</span>
+                                <span class="text-xs text-text-secondary">3 days ago</span>
+                            </div>
+                            <p class="text-sm text-text-secondary line-clamp-2">Technology sector shows resilience amid economic uncertainties with strong quarterly results...</p>
+                            <div class="flex items-center mt-2 text-xs text-text-secondary">
+                                <span>Short • English</span>
+                                <span class="mx-2">•</span>
+                                <span>324 words → 28 words</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-subtle">
+                        <a href="summary_history_archive.html" class="btn btn-secondary w-full text-sm">
+                            View All History
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Copy Success Toast -->
+    <div id="copyToast" class="hidden fixed bottom-4 right-4 bg-success-600 text-white px-4 py-2 rounded-md shadow-elevated z-50">
+        <div class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            Copied to clipboard!
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const textInput = document.getElementById('textInput');
+        const wordCount = document.getElementById('wordCount');
+        const charCount = document.getElementById('charCount');
+        const readingTime = document.getElementById('readingTime');
+        const estimatedSummaryTime = document.getElementById('estimatedSummaryTime');
+        const summarizeBtn = document.getElementById('summarizeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const loadingState = document.getElementById('loadingState');
+        const summarySection = document.getElementById('summarySection');
+        const summaryContent = document.getElementById('summaryContent');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const downloadMenu = document.getElementById('downloadMenu');
+        const copyToast = document.getElementById('copyToast');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const toggleHistory = document.getElementById('toggleHistory');
+        const historyContent = document.getElementById('historyContent');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Text Statistics Update
+        function updateTextStats() {
+            const text = textInput.value;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const chars = text.length;
+            const readTime = Math.ceil(words / 200) || 0; // 200 words per minute
+            const summaryReadTime = Math.ceil(readTime * 0.3) || 0; // Estimated 30% of original
+
+            wordCount.textContent = `${words} words`;
+            charCount.textContent = `${chars} characters`;
+            readingTime.textContent = `~${readTime} min read`;
+            estimatedSummaryTime.textContent = `~${summaryReadTime} min summary`;
+        }
+
+        // Event Listeners
+        textInput.addEventListener('input', updateTextStats);
+
+        // Clear button
+        clearBtn.addEventListener('click', () => {
+            textInput.value = '';
+            updateTextStats();
+            hideError();
+            hideSummary();
+        });
+
+        // Summarize button
+        summarizeBtn.addEventListener('click', async () => {
+            const text = textInput.value.trim();
+            
+            if (!text) {
+                showError('Please enter some text to summarize.');
+                return;
+            }
+
+            if (text.split(/\s+/).length < 10) {
+                showError('Please enter at least 10 words for meaningful summarization.');
+                return;
+            }
+
+            hideError();
+            showLoading();
+
+            // Simulate API call
+            setTimeout(() => {
+                hideLoading();
+                generateMockSummary(text);
+            }, 2000);
+        });
+
+        // Copy functionality
+        copyBtn.addEventListener('click', async () => {
+            const summaryText = summaryContent.textContent;
+            try {
+                await navigator.clipboard.writeText(summaryText);
+                showCopyToast();
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = summaryText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showCopyToast();
+            }
+        });
+
+        // Download menu toggle
+        downloadBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            downloadMenu.classList.toggle('hidden');
+        });
+
+        // Close download menu when clicking outside
+        document.addEventListener('click', () => {
+            downloadMenu.classList.add('hidden');
+        });
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // History toggle (mobile)
+        toggleHistory.addEventListener('click', () => {
+            historyContent.classList.toggle('hidden');
+            const icon = toggleHistory.querySelector('svg');
+            icon.style.transform = historyContent.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            // Save theme preference
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+        }
+
+        // Helper Functions
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+
+        function hideError() {
+            errorMessage.classList.add('hidden');
+        }
+
+        function showLoading() {
+            loadingState.classList.remove('hidden');
+            summarizeBtn.disabled = true;
+            summarizeBtn.innerHTML = `
+                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Processing...
+            `;
+        }
+
+        function hideLoading() {
+            loadingState.classList.add('hidden');
+            summarizeBtn.disabled = false;
+            summarizeBtn.innerHTML = `
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Summarize Text
+            `;
+        }
+
+        function generateMockSummary(originalText) {
+            const summaryMode = document.querySelector('input[name="summaryMode"]:checked').value;
+            const language = document.getElementById('languageSelect').value;
+            
+            let mockSummary = '';
+            
+            if (summaryMode === 'short') {
+                mockSummary = 'This text discusses key concepts and important information that provides valuable insights. The main points highlight significant findings and conclusions relevant to the topic.';
+            } else if (summaryMode === 'medium') {
+                mockSummary = 'This comprehensive text covers several important aspects of the subject matter. The content provides detailed analysis and insights that are crucial for understanding the topic. Key findings suggest significant implications for future research and practical applications. The author presents well-structured arguments supported by relevant evidence. Overall, the text offers valuable perspectives on the discussed themes.';
+            } else {
+                mockSummary = `
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Main topic covers essential concepts and fundamental principles</li>
+                        <li>Key findings reveal important insights and significant discoveries</li>
+                        <li>Analysis demonstrates clear patterns and meaningful correlations</li>
+                        <li>Practical applications show real-world relevance and utility</li>
+                        <li>Future implications suggest promising directions for development</li>
+                    </ul>
+                `;
+            }
+
+            // Language-specific mock content
+            if (language === 'hi') {
+                if (summaryMode === 'bullets') {
+                    mockSummary = `
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>मुख्य विषय आवश्यक अवधारणाओं और मौलिक सिद्धांतों को शामिल करता है</li>
+                            <li>मुख्य निष्कर्ष महत्वपूर्ण अंतर्दृष्टि और महत्वपूर्ण खोजों को प्रकट करते हैं</li>
+                            <li>विश्लेषण स्पष्ट पैटर्न और अर्थपूर्ण सहसंबंधों को दर्शाता है</li>
+                        </ul>
+                    `;
+                } else {
+                    mockSummary = 'यह पाठ मुख्य अवधारणाओं और महत्वपूर्ण जानकारी पर चर्चा करता है जो मूल्यवान अंतर्दृष्टि प्रदान करती है। मुख्य बिंदु विषय के लिए प्रासंगिक महत्वपूर्ण निष्कर्षों और निष्कर्षों को उजागर करते हैं।';
+                }
+            } else if (language === 'bn') {
+                if (summaryMode === 'bullets') {
+                    mockSummary = `
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>মূল বিষয় প্রয়োজনীয় ধারণা এবং মৌলিক নীতিগুলি অন্তর্ভুক্ত করে</li>
+                            <li>মূল অনুসন্ধানগুলি গুরুত্বপূর্ণ অন্তর্দৃষ্টি এবং উল্লেখযোগ্য আবিষ্কার প্রকাশ করে</li>
+                            <li>বিশ্লেষণ স্পষ্ট প্যাটার্ন এবং অর্থপূর্ণ সম্পর্ক প্রদর্শন করে</li>
+                        </ul>
+                    `;
+                } else {
+                    mockSummary = 'এই পাঠ্যটি মূল ধারণা এবং গুরুত্বপূর্ণ তথ্য নিয়ে আলোচনা করে যা মূল্যবান অন্তর্দৃষ্টি প্রদান করে। মূল পয়েন্টগুলি বিষয়ের সাথে প্রাসঙ্গিক গুরুত্বপূর্ণ অনুসন্ধান এবং উপসংহার তুলে ধরে।';
+                }
+            }
+
+            summaryContent.innerHTML = summaryMode === 'bullets' ? mockSummary : `<p class="text-text-primary leading-relaxed">${mockSummary}</p>`;
+            
+            // Update summary statistics
+            const originalWords = originalText.trim().split(/\s+/).length;
+            const summaryWords = summaryContent.textContent.trim().split(/\s+/).length;
+            const compressionRatio = Math.round((1 - summaryWords / originalWords) * 100);
+            const originalReadTime = Math.ceil(originalWords / 200);
+            const summaryReadTime = Math.ceil(summaryWords / 200);
+
+            document.getElementById('summaryWordCount').textContent = `${summaryWords} words`;
+            document.getElementById('compressionRatio').textContent = `${compressionRatio}% compression`;
+            document.getElementById('originalReadTime').textContent = `${originalReadTime} min`;
+            document.getElementById('summaryReadTime').textContent = `${summaryReadTime} min`;
+
+            showSummary();
+        }
+
+        function showSummary() {
+            summarySection.classList.remove('hidden');
+            summarySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function hideSummary() {
+            summarySection.classList.add('hidden');
+        }
+
+        function showCopyToast() {
+            copyToast.classList.remove('hidden');
+            setTimeout(() => {
+                copyToast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Initialize
+        updateTextStats();
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
